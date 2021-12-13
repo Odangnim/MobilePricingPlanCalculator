@@ -1,5 +1,6 @@
 package com.fab365.recruit.test;
 
+
 /**
  * A는 카드 청구서를 살펴보다가 휴대폰 요금이 wonPerMB만원이나 나와 깜짝 놀랐습니다.
  * 내역을 살펴보니, 데이터를 너무 많이 쓴게 화근이었습니다.
@@ -35,6 +36,8 @@ public final class MobilePricingPlanCalculator implements MobilePricingPlanServi
 	private int bData;
 	private int cData;
 	private int wonPerMB;
+	private int usageAddData;
+	private int limitPrice;
 	
 	public MobilePricingPlanCalculator() {
 		this.aPrice = 29900;
@@ -84,5 +87,44 @@ public final class MobilePricingPlanCalculator implements MobilePricingPlanServi
 		
 	    return paymentSystem;
 	}
+
+	@Override
+	public int usageAddData(Integer usageDataInMegabyte, String nowPaymentSystem) {
+		
+		if(nowPaymentSystem.equals("29900")) {
+			this.usageAddData = usageDataInMegabyte - 300;
+		}
+		else if(nowPaymentSystem.equals("34900")) {
+			this.usageAddData = usageDataInMegabyte - 3000;
+		}
+		else {
+			this.usageAddData = 0;
+		}
+		
+		return this.usageAddData;
+	}
+
+	@Override
+	public int limitDataPrice(Integer usageAddData) {
+		
+		if(usageAddData <= 5000) {
+			this.limitPrice = usageAddData * 20;
+			
+			if(this.limitPrice > 25000) {
+				this.limitPrice = 25000;
+			}
+		}
+		else {
+			this.limitPrice = usageAddData * 20;
+			
+			if(this.limitPrice > 180000) {
+				this.limitPrice = 180000;
+			}
+		}
+		
+		return this.limitPrice;
+	}
+
+
 
 }

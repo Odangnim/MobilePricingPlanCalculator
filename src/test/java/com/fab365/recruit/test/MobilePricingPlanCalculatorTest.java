@@ -31,5 +31,16 @@ class MobilePricingPlanCalculatorTest {
 
 	  // A가 '34900'요금제 사용하고 있을 시 가장 효율적인 요금제
 	  assertThat(nowService.minimumPricePlan(nowService.usageDataInMegabyte(200000, "34900"))).isEqualTo("69900");
+	  
+	  //'29900'요금제 사용시 추가 사용 데이터
+	  assertThat(nowService.usageAddData(nowService.usageDataInMegabyte(200000, "29900"), "29900")).isEqualTo(8505);
+
+	  //'34900'요금제 사용시 추가 사용 데이터
+	  assertThat(nowService.usageAddData(nowService.usageDataInMegabyte(200000, "34900"), "34900")).isEqualTo(8255);
+	  
+	  //데이터 요금 상한제
+	  assertThat(nowService.limitDataPrice(5001)).isEqualTo(100020);
+	  assertThat(nowService.limitDataPrice(5000)).isEqualTo(25000);
+	  assertThat(nowService.limitDataPrice(50000)).isEqualTo(180000);
   }
 }
